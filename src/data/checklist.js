@@ -11,12 +11,12 @@ export const foodChecklist = [
   },
   {
     id: "fc-2",
-    name: "Bar Central (Mercado Central)",
+    name: "Tapas Barrio del Carmen",
     type: "tapas",
     day: 1,
     price: "€",
-    tip: "Bomba di patata, croquetas, tartare. Firmato da Ricard Camarena.",
-    photoTip: "Il bancone colorato del bar è perfetto per una foto d'ambiente.",
+    tip: "Pranzo di tapas nel cuore del Barrio del Carmen. Croquetas, patatas bravas, pan con tomate. Tavoli fuori, atmosfera autentica.",
+    photoTip: "Le croquetas dorate su un piatto di ceramica sono la foto perfetta per iniziare la vacanza.",
     checked: false,
   },
   {
