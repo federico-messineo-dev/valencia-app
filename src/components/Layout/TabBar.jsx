@@ -9,7 +9,10 @@ const tabs = [
 
 export default function TabBar({ active, onChange }) {
   return (
-    <div className="fixed bottom-4 inset-x-0 z-50 flex justify-center px-4 pointer-events-none">
+    <div
+      className="fixed inset-x-0 z-50 flex justify-center px-4 pointer-events-none"
+      style={{ bottom: "calc(env(safe-area-inset-bottom, 0px) + 16px)" }}
+    >
       <motion.nav
         initial={{ y: 30, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}

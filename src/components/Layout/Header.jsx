@@ -7,7 +7,8 @@ export default function Header() {
     <motion.header
       initial={{ y: -20, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
-      className="bg-surface/90 backdrop-blur-xl border-b border-notte/8 px-4 py-3 sticky top-0 z-50"
+      className="bg-surface/90 backdrop-blur-xl border-b border-notte/8 px-4 sticky top-0 z-50"
+      style={{ paddingTop: "calc(env(safe-area-inset-top, 0px) + 12px)", paddingBottom: "12px" }}
     >
       <div className="flex items-center justify-between">
         <div className="flex-1" />
