@@ -28,9 +28,9 @@ export default function ItineraryTab() {
 
   return (
     <div className="pb-24">
-      {/* Day Tabs */}
-      <div className="px-4 pt-3 pb-2">
-        <div className="flex gap-1.5 overflow-x-auto no-scrollbar pb-1">
+      {/* Day Tabs — Sticky */}
+      <div className="sticky top-[52px] z-40 bg-sand/90 backdrop-blur-xl px-4 pt-3 pb-2 border-b border-notte/5">
+        <div className="flex gap-2 overflow-x-auto no-scrollbar pb-1">
           {days.map((d, i) => (
             <motion.button
               key={d.id}
@@ -39,7 +39,7 @@ export default function ItineraryTab() {
                 setDirection(i > activeDay ? 1 : -1)
                 setActiveDay(i)
               }}
-              className={`flex-shrink-0 px-3 py-1.5 rounded-full text-xs font-semibold transition-all ${
+              className={`flex-shrink-0 px-4 py-2 rounded-full text-sm font-semibold transition-all ${
                 activeDay === i
                   ? "bg-gradient-to-r from-valencia to-peach text-white shadow-md shadow-valencia/20"
                   : "bg-notte/5 text-notte/50 hover:bg-notte/10"
