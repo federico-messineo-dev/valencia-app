@@ -1,8 +1,12 @@
-import { Palmtree } from "lucide-react"
+import { Palmtree, RefreshCw } from "lucide-react"
 import { motion } from "framer-motion"
 import SyncBadge from "./SyncBadge"
 
 export default function Header() {
+  const handleRefresh = () => {
+    window.location.reload(true)
+  }
+
   return (
     <motion.header
       initial={{ y: -20, opacity: 0 }}
@@ -25,8 +29,16 @@ export default function Header() {
             </p>
           </div>
         </div>
-        <div className="flex-1 flex justify-end">
+        <div className="flex-1 flex items-center justify-end gap-1.5">
           <SyncBadge />
+          <motion.button
+            whileTap={{ scale: 0.85, rotate: -180 }}
+            onClick={handleRefresh}
+            className="p-1.5 rounded-full text-notte/20 hover:text-notte/40 hover:bg-notte/5 transition-colors"
+            aria-label="Aggiorna pagina"
+          >
+            <RefreshCw className="w-3.5 h-3.5" strokeWidth={2} />
+          </motion.button>
         </div>
       </div>
     </motion.header>
