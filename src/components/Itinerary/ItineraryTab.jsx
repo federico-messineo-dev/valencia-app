@@ -1,4 +1,4 @@
-import { useState, useRef, useCallback } from "react"
+import { useState, useRef, useCallback, useEffect } from "react"
 import { motion, useMotionValue, useTransform, animate } from "framer-motion"
 import { days } from "../../data/itinerary"
 import { getLazyItinerary, calculateBudget, formatCurrency } from "../../utils/helpers"
@@ -18,19 +18,28 @@ export default function ItineraryTab() {
   const [activeDay, setActiveDay] = useState(0)
   const x = useMotionValue(0)
   const containerRef = useRef(null)
+  const tabsRef = useRef(null)
+  const tabRefs = useRef([])
   const dragging = useRef(false)
   const startX = useRef(0)
-  const currentDir = useRef(0)
 
   const day = days[activeDay]
   const isLazy = lazyMode === "lazy"
   const stops = isLazy ? getLazyItinerary(day) : day.stops
   const budget = calculateBudget(stops)
 
+  useEffect(() => {
+    const el = tabRefs.current[activeDay]
+    if (el && tabsRef.current) {
+      const container = tabsRef.current
+      const left = el.offsetLeft - container.offsetWidth / 2 + el.offsetWidth / 2
+      container.scrollTo({ left: Math.max(0, left), behavior: "smooth" })
+    }
+  }, [activeDay])
+
   const goToDay = useCallback(
     (next) => {
       if (next < 0 || next >= days.length || next === activeDay) return
-      currentDir.current = next > activeDay ? 1 : -1
       setActiveDay(next)
       animate(x, 0, SPRING)
     },
@@ -81,14 +90,15 @@ export default function ItineraryTab() {
     <div className="pb-24">
       {/* Day Tabs — Fixed */}
       <div
-        className="fixed inset-x-0 z-40 border-b border-notte/5"
+        className="fixed inset-x-0 z-[55] border-b border-notte/5"
         style={{ top: "calc(env(safe-area-inset-top, 0px) + 68px)" }}
       >
         <div className="bg-surface/95 backdrop-blur-xl">
-          <div className="flex gap-2 overflow-x-auto no-scrollbar px-4 py-2.5">
+          <div ref={tabsRef} className="flex gap-2 overflow-x-auto no-scrollbar px-4 py-2.5">
             {days.map((d, i) => (
               <motion.button
                 key={d.id}
+                ref={(el) => (tabRefs.current[i] = el)}
                 whileTap={{ scale: 0.95 }}
                 onClick={() => goToDay(i)}
                 className={`flex-shrink-0 px-4 py-2 rounded-xl text-xs font-semibold transition-all duration-200 ${
