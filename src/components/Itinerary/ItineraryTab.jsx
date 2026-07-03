@@ -65,34 +65,30 @@ export default function ItineraryTab() {
     }
   }, [])
 
-  const variants = {
-    enter: (dir) => ({ x: dir > 0 ? "60%" : "-60%", opacity: 0.3 }),
-    center: { x: 0, opacity: 1 },
-    exit: (dir) => ({ x: dir > 0 ? "-60%" : "60%", opacity: 0.3 }),
-  }
-
   return (
     <div className="pb-24">
       {/* Day Tabs — Fixed */}
       <div
-        className="fixed inset-x-0 z-40 bg-sand/90 backdrop-blur-xl px-4 border-b border-notte/5"
+        className="fixed inset-x-0 z-40 border-b border-notte/5"
         style={{ top: "calc(env(safe-area-inset-top, 0px) + 48px)" }}
       >
-        <div className="flex gap-2 overflow-x-auto no-scrollbar py-2.5">
-          {days.map((d, i) => (
-            <motion.button
-              key={d.id}
-              whileTap={{ scale: 0.95 }}
-              onClick={() => goToDay(i)}
-              className={`flex-shrink-0 px-4 py-2 rounded-full text-sm font-semibold transition-all ${
-                activeDay === i
-                  ? "bg-gradient-to-r from-valencia to-peach text-white shadow-md shadow-valencia/20"
-                  : "bg-notte/5 text-notte/50 hover:bg-notte/10"
-              }`}
-            >
-              {d.emoji} {d.title}
-            </motion.button>
-          ))}
+        <div className="bg-surface/95 backdrop-blur-xl">
+          <div className="flex gap-2 overflow-x-auto no-scrollbar px-4 py-2.5">
+            {days.map((d, i) => (
+              <motion.button
+                key={d.id}
+                whileTap={{ scale: 0.95 }}
+                onClick={() => goToDay(i)}
+                className={`flex-shrink-0 px-4 py-2 rounded-xl text-xs font-semibold transition-all duration-200 ${
+                  activeDay === i
+                    ? "bg-valencia text-white shadow-md shadow-valencia/25"
+                    : "bg-notte/5 text-notte/45 active:bg-notte/10"
+                }`}
+              >
+                {d.emoji} {d.title}
+              </motion.button>
+            ))}
+          </div>
         </div>
       </div>
 
@@ -102,17 +98,16 @@ export default function ItineraryTab() {
         onPointerMove={handlePointerMove}
         onPointerUp={handlePointerUp}
         onPointerCancel={handlePointerUp}
-        style={{ touchAction: "pan-y", marginTop: "calc(env(safe-area-inset-top, 0px) + 92px)" }}
+        style={{ touchAction: "pan-y", marginTop: "calc(env(safe-area-inset-top, 0px) + 100px)" }}
       >
-        <AnimatePresence custom={direction} mode="wait">
+        <AnimatePresence custom={direction} mode="popLayout">
           <motion.div
             key={activeDay}
             custom={direction}
-            variants={variants}
-            initial="enter"
-            animate="center"
-            exit="exit"
-            transition={{ type: "tween", duration: 0.35, ease: [0.25, 1, 0.5, 1] }}
+            initial={(dir) => ({ x: dir > 0 ? "45%" : "-45%", opacity: 0.4 })}
+            animate={{ x: 0, opacity: 1 }}
+            exit={(dir) => ({ x: dir > 0 ? "-45%" : "45%", opacity: 0.4 })}
+            transition={{ type: "tween", duration: 0.4, ease: [0.25, 1, 0.5, 1] }}
           >
             {/* Smart Day Header */}
             <DayHeader
