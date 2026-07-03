@@ -87,7 +87,9 @@ export default function ItineraryTab() {
               <div key={stop.id}>
                 <StopCard stop={stop} index={i} />
                 {stop.isFoodSpot && (
-                  <FoodRating spotId={stop.id} spotName={stop.name} />
+                  <div className="ml-4 mr-4 mb-4 pl-4 border-l-2 border-valencia/20">
+                    <FoodRating spotId={stop.id} spotName={stop.name} />
+                  </div>
                 )}
               </div>
             ))}

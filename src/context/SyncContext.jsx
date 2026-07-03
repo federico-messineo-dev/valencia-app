@@ -37,9 +37,9 @@ export function SyncProvider({ children }) {
 
   const [expenses, setExpenses] = useState(() => {
     try {
-      return JSON.parse(localStorage.getItem("expenses")) || []
+      return JSON.parse(localStorage.getItem("expenses")) || {}
     } catch {
-      return []
+      return {}
     }
   })
 
@@ -154,9 +154,11 @@ export function SyncProvider({ children }) {
   )
 
   const addExpense = useCallback(
-    (expense) => {
+    (dayId, amount, split) => {
       setExpenses((prev) => {
-        const next = [...prev, { ...expense, id: Date.now(), createdAt: new Date().toISOString() }]
+        const dayList = prev[dayId] || []
+        const expense = { id: Date.now(), amount, split }
+        const next = { ...prev, [dayId]: [...dayList, expense] }
         broadcastUpdate("budget_expenses", next)
         return next
       })
@@ -164,19 +166,36 @@ export function SyncProvider({ children }) {
     [broadcastUpdate]
   )
 
-  const deleteExpense = useCallback(
-    (id) => {
+  const removeExpense = useCallback(
+    (dayId, expenseId) => {
       setExpenses((prev) => {
-        const next = prev.filter((e) => e.id !== id)
+        const dayList = (prev[dayId] || []).filter((e) => e.id !== expenseId)
+        const next = { ...prev, [dayId]: dayList }
         broadcastUpdate("budget_expenses", next)
         return next
       })
     },
     [broadcastUpdate]
   )
+
+  const resetDayExpenses = useCallback(
+    (dayId) => {
+      setExpenses((prev) => {
+        const next = { ...prev, [dayId]: [] }
+        broadcastUpdate("budget_expenses", next)
+        return next
+      })
+    },
+    [broadcastUpdate]
+  )
+
+  const resetAllExpenses = useCallback(() => {
+    setExpenses({})
+    broadcastUpdate("budget_expenses", {})
+  }, [broadcastUpdate])
 
   const totalSpent = useMemo(
-    () => expenses.reduce((sum, e) => sum + (Number(e.amount) || 0), 0),
+    () => Object.values(expenses).flat().reduce((sum, e) => sum + (Number(e.amount) || 0), 0),
     [expenses]
   )
 
@@ -194,7 +213,9 @@ export function SyncProvider({ children }) {
       toggleLazyMode,
       updateFoodVote,
       addExpense,
-      deleteExpense,
+      removeExpense,
+      resetDayExpenses,
+      resetAllExpenses,
     }),
     [
       foodChecked,
@@ -209,7 +230,9 @@ export function SyncProvider({ children }) {
       toggleLazyMode,
       updateFoodVote,
       addExpense,
-      deleteExpense,
+      removeExpense,
+      resetDayExpenses,
+      resetAllExpenses,
     ]
   )
 
