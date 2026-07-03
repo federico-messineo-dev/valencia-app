@@ -107,25 +107,37 @@ export default function ItineraryTab() {
     <div className="pb-24">
       {/* Day Tabs */}
       <div
-        className="sticky z-[55] bg-surface border-b border-notte/5 px-4 py-2.5"
+        className="sticky z-[55] px-4 py-2.5"
         style={{ top: "calc(env(safe-area-inset-top, 0px) + 68px)" }}
       >
-        <div ref={tabsRef} className="flex gap-2 overflow-x-auto no-scrollbar">
-          {days.map((d, i) => (
-            <motion.button
-              key={d.id}
-              ref={(el) => (tabRefs.current[i] = el)}
-              whileTap={{ scale: 0.95 }}
-              onClick={() => goToDay(i)}
-              className={`flex-shrink-0 px-4 py-2 rounded-xl text-xs font-semibold transition-all duration-200 ${
-                activeDay === i
-                  ? "bg-valencia text-white shadow-md shadow-valencia/25"
-                  : "bg-notte/5 text-notte/45 active:bg-notte/10"
-              }`}
-            >
-              {d.emoji} {d.title}
-            </motion.button>
-          ))}
+        <div className="flex justify-center">
+          <div
+            ref={tabsRef}
+            className="flex gap-1.5 overflow-x-auto no-scrollbar bg-notte/75 backdrop-blur-md border border-white/15 shadow-2xl shadow-black/20 rounded-full px-2 py-1.5"
+          >
+            {days.map((d, i) => (
+              <motion.button
+                key={d.id}
+                ref={(el) => (tabRefs.current[i] = el)}
+                whileTap={{ scale: 0.95 }}
+                onClick={() => goToDay(i)}
+                className={`relative flex-shrink-0 px-3.5 py-1.5 rounded-full text-[11px] font-semibold transition-all duration-200 ${
+                  activeDay === i ? "text-white" : "text-white/45"
+                }`}
+              >
+                {activeDay === i && (
+                  <motion.div
+                    layoutId="day-pill"
+                    className="absolute inset-0 bg-gradient-to-r from-valencia to-peach rounded-full"
+                    transition={{ type: "spring", stiffness: 400, damping: 30 }}
+                  />
+                )}
+                <span className="relative z-10">
+                  {d.emoji} {d.title}
+                </span>
+              </motion.button>
+            ))}
+          </div>
         </div>
       </div>
 
