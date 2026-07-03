@@ -89,8 +89,13 @@ export default function ItineraryTab() {
       dragging.current = false
       if (lockedAxis.current === "x") {
         const dx = e.clientX - startX.current
-        if (Math.abs(dx) > SWIPE_THRESHOLD) {
-          goToDay(dx < 0 ? activeDay + 1 : activeDay - 1)
+        const isLast = activeDay === days.length - 1
+        const isFirst = activeDay === 0
+        const goingNext = dx < 0
+        const goingPrev = dx > 0
+
+        if (Math.abs(dx) > SWIPE_THRESHOLD && ((goingNext && !isLast) || (goingPrev && !isFirst))) {
+          goToDay(goingNext ? activeDay + 1 : activeDay - 1)
         } else {
           animate(x, 0, SPRING)
         }
