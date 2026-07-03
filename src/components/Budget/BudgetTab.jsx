@@ -109,7 +109,7 @@ export default function BudgetTab() {
       <div className="px-4 space-y-2">
         <p className="text-xs font-bold text-notte/40 mb-1 px-1">PER GIORNO</p>
         {days.map((day) => {
-          const dayExpenses = expenses[day.id]
+          const dayExpenses = expenses[day.id] || []
           const dayTotal = dayExpenses.reduce((a, e) => a + e.amount, 0)
           return (
             <motion.div
