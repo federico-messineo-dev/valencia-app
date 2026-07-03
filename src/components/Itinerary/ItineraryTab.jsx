@@ -105,29 +105,24 @@ export default function ItineraryTab() {
 
   return (
     <div className="pb-24">
-      {/* Day Tabs — Fixed */}
-      <div
-        className="fixed inset-x-0 z-[55] border-b border-notte/5"
-        style={{ top: "calc(env(safe-area-inset-top, 0px) + 68px)" }}
-      >
-        <div className="bg-surface/95 backdrop-blur-xl">
-          <div ref={tabsRef} className="flex gap-2 overflow-x-auto no-scrollbar px-4 py-2.5">
-            {days.map((d, i) => (
-              <motion.button
-                key={d.id}
-                ref={(el) => (tabRefs.current[i] = el)}
-                whileTap={{ scale: 0.95 }}
-                onClick={() => goToDay(i)}
-                className={`flex-shrink-0 px-4 py-2 rounded-xl text-xs font-semibold transition-all duration-200 ${
-                  activeDay === i
-                    ? "bg-valencia text-white shadow-md shadow-valencia/25"
-                    : "bg-notte/5 text-notte/45 active:bg-notte/10"
-                }`}
-              >
-                {d.emoji} {d.title}
-              </motion.button>
-            ))}
-          </div>
+      {/* Day Tabs */}
+      <div className="bg-surface border-b border-notte/5 px-4 py-2.5">
+        <div ref={tabsRef} className="flex gap-2 overflow-x-auto no-scrollbar">
+          {days.map((d, i) => (
+            <motion.button
+              key={d.id}
+              ref={(el) => (tabRefs.current[i] = el)}
+              whileTap={{ scale: 0.95 }}
+              onClick={() => goToDay(i)}
+              className={`flex-shrink-0 px-4 py-2 rounded-xl text-xs font-semibold transition-all duration-200 ${
+                activeDay === i
+                  ? "bg-valencia text-white shadow-md shadow-valencia/25"
+                  : "bg-notte/5 text-notte/45 active:bg-notte/10"
+              }`}
+            >
+              {d.emoji} {d.title}
+            </motion.button>
+          ))}
         </div>
       </div>
 
@@ -139,7 +134,7 @@ export default function ItineraryTab() {
         onPointerUp={handlePointerUp}
         onPointerCancel={handlePointerUp}
         className="overflow-hidden select-none"
-        style={{ marginTop: "calc(env(safe-area-inset-top, 0px) + 116px)", touchAction: "pan-y" }}
+        style={{ touchAction: "pan-y" }}
       >
         <motion.div style={{ x, backgroundColor: bg }}>
           {/* Smart Day Header */}
