@@ -22,6 +22,8 @@ export default function ItineraryTab() {
   const tabRefs = useRef([])
   const dragging = useRef(false)
   const startX = useRef(0)
+  const startY = useRef(0)
+  const lockedAxis = useRef(null)
 
   const day = days[activeDay]
   const isLazy = lazyMode === "lazy"
@@ -50,6 +52,8 @@ export default function ItineraryTab() {
     (e) => {
       dragging.current = true
       startX.current = e.clientX
+      startY.current = e.clientY
+      lockedAxis.current = null
       x.stop()
       x.set(0)
     },
@@ -59,12 +63,21 @@ export default function ItineraryTab() {
   const handlePointerMove = useCallback(
     (e) => {
       if (!dragging.current) return
-      const dx = e.clientX - startX.current
+      const dx = Math.abs(e.clientX - startX.current)
+      const dy = Math.abs(e.clientY - startY.current)
+
+      if (!lockedAxis.current && (dx > 12 || dy > 12)) {
+        lockedAxis.current = dx > dy * 1.5 ? "x" : "y"
+      }
+
+      if (lockedAxis.current !== "x") return
+
+      const raw = e.clientX - startX.current
       const container = containerRef.current
       if (!container) return
       const width = container.offsetWidth
       const maxSwipe = width * 0.4
-      const damped = (dx / maxSwipe) * maxSwipe * 0.6
+      const damped = (raw / maxSwipe) * maxSwipe * 0.6
       x.set(Math.max(-maxSwipe, Math.min(maxSwipe, damped)))
     },
     [x]
@@ -74,9 +87,13 @@ export default function ItineraryTab() {
     (e) => {
       if (!dragging.current) return
       dragging.current = false
-      const dx = e.clientX - startX.current
-      if (Math.abs(dx) > SWIPE_THRESHOLD) {
-        goToDay(dx < 0 ? activeDay + 1 : activeDay - 1)
+      if (lockedAxis.current === "x") {
+        const dx = e.clientX - startX.current
+        if (Math.abs(dx) > SWIPE_THRESHOLD) {
+          goToDay(dx < 0 ? activeDay + 1 : activeDay - 1)
+        } else {
+          animate(x, 0, SPRING)
+        }
       } else {
         animate(x, 0, SPRING)
       }
