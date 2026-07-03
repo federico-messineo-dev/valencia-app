@@ -16,7 +16,7 @@ export default function ItineraryTab() {
   const [direction, setDirection] = useState(0)
 
   const day = days[activeDay]
-  const isLazy = lazyMode[day.id]
+  const isLazy = lazyMode === "lazy"
   const stops = isLazy ? getLazyItinerary(day) : day.stops
   const budget = calculateBudget(stops)
 
@@ -84,12 +84,14 @@ export default function ItineraryTab() {
           {/* Stops Timeline */}
           <div className="px-4">
             {stops.map((stop, i) => (
-              <StopCard key={stop.id} stop={stop} index={i} />
+              <div key={stop.id}>
+                <StopCard stop={stop} index={i} />
+                {stop.isFoodSpot && (
+                  <FoodRating spotId={stop.id} spotName={stop.name} />
+                )}
+              </div>
             ))}
           </div>
-
-          {/* ⚽ Totocalcio del Cibo — solo Giorno 3 (dopo la paella) */}
-          {day.id === 3 && <FoodRating />}
 
           {/* Map */}
           <DayMap stops={stops} />

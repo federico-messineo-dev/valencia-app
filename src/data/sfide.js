@@ -2,38 +2,38 @@ export const sfideByDay = [
   {
     day: 1,
     emoji: "💕",
-    title: "Selfie Simmetrico",
+    title: "Mercato Blind Test",
     challenge:
-      "Entrate insieme al centro di Plaza Redonda e scattate un selfie cercando di catturare tutti e 117 gli archi. Chi riesce a fare la foto più simmetrica vince!",
+      "Al Mercado Central, comprate lo snack o la tapas più strana o tipica comunicando solo in spagnolo o a gesti. Nessun inglese! Chi fallisce paga un giro di sangria.",
     prize: "Il perdente paga l'Agua de Valencia 🍹",
-    icon: "📸",
+    icon: "🛒",
   },
   {
     day: 2,
     emoji: "🧠",
-    title: "Mercato盲 Taste Test",
+    title: "Caccia al Tesoro a Plaza Redonda",
     challenge:
-      "Al Mercado Central, chiudete gli occhi e assaggiate 3 spezie diverse dal banco delle spezie. Chi indovina più spezie vince la sfida!",
-    prize: "Il perdente prepara la colazione domani 🥐",
-    icon: "🌶️",
+      "Trovate il ventaglio più stravagante o l'oggetto in ceramica più assurdo a Plaza Redonda e fategli una foto di nascosto. Poi postatelo nella story più divertente.",
+    prize: "Chi perde lo indossa per tutto il pomeriggio 🪭",
+    icon: "🔍",
   },
   {
     day: 3,
     emoji: "🌅",
-    title: "Tramonto Romantico",
+    title: "Riflessi Rossi",
     challenge:
-      "Sui moli dell'Albufera, tenetevi per mano e guardate il tramonto senza parlare per 2 minuti interi. Poi raccontate a voce alta la prima cosa che vi è venuta in mente.",
+      "Sui moli dell'Albufera, riuscite a scattare la foto perfetta con i riflessi rossi sull'acqua prima che il sole sparisca (tramonto alle 21:30!). La foto più bella vince.",
     prize: "Un abbraccio lungo quanto il tramonto 🤗",
-    icon: "🌅",
+    icon: "📸",
   },
   {
     day: 4,
     emoji: "🌊",
-    title: "Castello di Sabbia",
+    title: "Piccola Venezia Colorata",
     challenge:
-      "In spiaggia, costruite insieme il castello di sabbia più alto possibile in 10 minuti. Fotografatelo e dedicategli un nome romantico.",
+      "A Port Saplaya, trovate la casa colorata più figa e fatevi una foto insieme che sembri una cartolina. Poi cercate di indovinare il colore di quante più case possibile.",
     prize: "Chi perde si tuffa con tutti i vestiti addosso 💦",
-    icon: "🏰",
+    icon: "🏠",
   },
   {
     day: 5,
