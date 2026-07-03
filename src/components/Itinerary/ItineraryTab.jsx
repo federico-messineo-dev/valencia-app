@@ -106,7 +106,10 @@ export default function ItineraryTab() {
   return (
     <div className="pb-24">
       {/* Day Tabs */}
-      <div className="bg-surface border-b border-notte/5 px-4 py-2.5">
+      <div
+        className="sticky z-[55] bg-surface border-b border-notte/5 px-4 py-2.5"
+        style={{ top: "calc(env(safe-area-inset-top, 0px) + 68px)" }}
+      >
         <div ref={tabsRef} className="flex gap-2 overflow-x-auto no-scrollbar">
           {days.map((d, i) => (
             <motion.button
