@@ -10,14 +10,15 @@ import BorsaWidget from "./BorsaWidget"
 import SfidaCard from "./SfidaCard"
 import FoodRating from "./FoodRating"
 
-const SWIPE_THRESHOLD = 50
+const SWIPE_THRESHOLD = 40
 
 export default function ItineraryTab() {
   const { lazyMode, toggleLazyMode } = useSync()
   const [activeDay, setActiveDay] = useState(0)
   const [direction, setDirection] = useState(0)
-  const touchStart = useRef(null)
-  const touchStartY = useRef(null)
+  const dragStart = useRef({ x: 0, y: 0 })
+  const isDragging = useRef(false)
+  const lockedAxis = useRef(null)
 
   const day = days[activeDay]
   const isLazy = lazyMode === "lazy"
@@ -33,30 +34,41 @@ export default function ItineraryTab() {
     [activeDay]
   )
 
-  const handleTouchStart = useCallback((e) => {
-    touchStart.current = e.touches[0].clientX
-    touchStartY.current = e.touches[0].clientY
+  const handlePointerDown = useCallback((e) => {
+    dragStart.current = { x: e.clientX, y: e.clientY }
+    isDragging.current = true
+    lockedAxis.current = null
   }, [])
 
-  const handleTouchEnd = useCallback(
+  const handlePointerUp = useCallback(
     (e) => {
-      if (touchStart.current === null) return
-      const deltaX = e.changedTouches[0].clientX - touchStart.current
-      const deltaY = e.changedTouches[0].clientY - touchStartY.current
-      if (Math.abs(deltaX) > Math.abs(deltaY) && Math.abs(deltaX) > SWIPE_THRESHOLD) {
-        if (deltaX < 0) goToDay(activeDay + 1)
-        else goToDay(activeDay - 1)
+      if (!isDragging.current) return
+      const dx = e.clientX - dragStart.current.x
+
+      if (lockedAxis.current === "x" && Math.abs(dx) > SWIPE_THRESHOLD) {
+        goToDay(dx < 0 ? activeDay + 1 : activeDay - 1)
       }
-      touchStart.current = null
-      touchStartY.current = null
+
+      isDragging.current = false
+      lockedAxis.current = null
     },
     [activeDay, goToDay]
   )
 
+  const handlePointerMove = useCallback((e) => {
+    if (!isDragging.current) return
+    const dx = Math.abs(e.clientX - dragStart.current.x)
+    const dy = Math.abs(e.clientY - dragStart.current.y)
+
+    if (!lockedAxis.current && (dx > 8 || dy > 8)) {
+      lockedAxis.current = dx > dy ? "x" : "y"
+    }
+  }, [])
+
   const variants = {
-    enter: (dir) => ({ x: dir > 0 ? 300 : -300, opacity: 0 }),
+    enter: (dir) => ({ x: dir > 0 ? "60%" : "-60%", opacity: 0.3 }),
     center: { x: 0, opacity: 1 },
-    exit: (dir) => ({ x: dir > 0 ? -300 : 300, opacity: 0 }),
+    exit: (dir) => ({ x: dir > 0 ? "-60%" : "60%", opacity: 0.3 }),
   }
 
   return (
@@ -82,7 +94,13 @@ export default function ItineraryTab() {
       </div>
 
       {/* Animated Day Content — swipeable */}
-      <div onTouchStart={handleTouchStart} onTouchEnd={handleTouchEnd}>
+      <div
+        onPointerDown={handlePointerDown}
+        onPointerMove={handlePointerMove}
+        onPointerUp={handlePointerUp}
+        onPointerCancel={handlePointerUp}
+        style={{ touchAction: "pan-y" }}
+      >
         <AnimatePresence custom={direction} mode="wait">
           <motion.div
             key={activeDay}
@@ -91,7 +109,7 @@ export default function ItineraryTab() {
             initial="enter"
             animate="center"
             exit="exit"
-            transition={{ type: "spring", stiffness: 300, damping: 30 }}
+            transition={{ type: "tween", duration: 0.2, ease: [0.32, 0.72, 0, 1] }}
           >
             {/* Smart Day Header */}
             <DayHeader
