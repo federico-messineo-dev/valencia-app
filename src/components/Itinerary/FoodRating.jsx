@@ -144,22 +144,26 @@ function FoodRating({ spotId, spotName }) {
               </div>
             ))}
 
-            <div className="mt-3">
-              <span className="text-xs text-notte/50 block mb-1">Note</span>
-              <div className="flex gap-2">
+            <div className="mt-4 space-y-2">
+              <span className="text-xs text-notte/50 font-medium block">Note personali</span>
+              <div className="bg-sand/50 rounded-xl p-2.5 border border-notte/5">
+                <span className="text-[10px] text-notte/40 flex items-center gap-1 mb-1">🧑 Federico</span>
                 <input
                   type="text"
-                  placeholder="Federico"
+                  placeholder="Scrivi qui..."
                   value={federicoVotes?.[spotKey]?.notes || ""}
                   onChange={(e) => setNotes("federico", e.target.value)}
-                  className="flex-1 text-xs bg-sand/50 border border-notte/10 rounded-lg px-3 py-2 focus:outline-none focus:border-valencia/40"
+                  className="w-full text-xs bg-white border border-notte/10 rounded-lg px-3 py-2 focus:outline-none focus:border-valencia/40 placeholder:text-notte/20"
                 />
+              </div>
+              <div className="bg-sand/50 rounded-xl p-2.5 border border-notte/5">
+                <span className="text-[10px] text-notte/40 flex items-center gap-1 mb-1">👩 Gaia</span>
                 <input
                   type="text"
-                  placeholder="Gaia"
+                  placeholder="Scrivi qui..."
                   value={gaiaVotes?.[spotKey]?.notes || ""}
                   onChange={(e) => setNotes("gaia", e.target.value)}
-                  className="flex-1 text-xs bg-sand/50 border border-notte/10 rounded-lg px-3 py-2 focus:outline-none focus:border-valencia/40"
+                  className="w-full text-xs bg-white border border-notte/10 rounded-lg px-3 py-2 focus:outline-none focus:border-valencia/40 placeholder:text-notte/20"
                 />
               </div>
             </div>

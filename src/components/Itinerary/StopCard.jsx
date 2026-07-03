@@ -14,7 +14,9 @@ import {
   Lightbulb,
   Moon,
   Navigation,
+  Check,
 } from "lucide-react"
+import { useSync } from "../../hooks/useSync"
 
 const categoryIcons = {
   food: UtensilsCrossed,
@@ -49,6 +51,8 @@ function openMaps(coords, name) {
 
 export default function StopCard({ stop, index }) {
   const [expanded, setExpanded] = useState(false)
+  const { checkedStops, toggleStopChecked } = useSync()
+  const isChecked = !!checkedStops[stop.id]
   const CatIcon = categoryIcons[stop.category] || Landmark
   const LogIcon = logisticsIcons[stop.logisticsIcon] || Footprints
   const colors = categoryColors[stop.category] || categoryColors.cultura
@@ -75,7 +79,7 @@ export default function StopCard({ stop, index }) {
           whileTap={{ scale: 0.98 }}
           onClick={() => setExpanded(!expanded)}
           className={`bg-surface rounded-2xl border overflow-hidden cursor-pointer transition-colors ${
-            expanded ? colors.border : "border-notte/5"
+            isChecked ? "border-valencia/30 bg-valencia/5" : expanded ? colors.border : "border-notte/5"
           } shadow-sm`}
         >
           {/* Header */}
@@ -90,11 +94,26 @@ export default function StopCard({ stop, index }) {
               >
                 {stop.budget}
               </span>
+              {/* Check button */}
+              <motion.button
+                whileTap={{ scale: 0.85 }}
+                onClick={(e) => {
+                  e.stopPropagation()
+                  toggleStopChecked(stop.id)
+                }}
+                className={`ml-auto w-6 h-6 rounded-full flex items-center justify-center border-2 transition-colors ${
+                  isChecked
+                    ? "bg-valencia border-valencia text-white"
+                    : "border-notte/20 bg-transparent text-transparent hover:border-valencia/50"
+                }`}
+              >
+                <Check className="w-3.5 h-3.5" strokeWidth={3} />
+              </motion.button>
             </div>
-            <h3 className="text-sm font-bold text-notte leading-tight">
+            <h3 className={`text-sm font-bold leading-tight ${isChecked ? "text-notte/40 line-through" : "text-notte"}`}>
               {stop.name}
             </h3>
-            <p className="text-xs text-notte/45 mt-0.5 line-clamp-1">
+            <p className={`text-xs mt-0.5 line-clamp-1 ${isChecked ? "text-notte/30" : "text-notte/45"}`}>
               {stop.description}
             </p>
           </div>

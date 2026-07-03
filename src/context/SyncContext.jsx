@@ -43,6 +43,14 @@ export function SyncProvider({ children }) {
     }
   })
 
+  const [checkedStops, setCheckedStops] = useState(() => {
+    try {
+      return JSON.parse(localStorage.getItem("checkedStops")) || {}
+    } catch {
+      return {}
+    }
+  })
+
   const [connectionStatus, setConnectionStatus] = useState(
     isSupabaseConfigured() ? "connecting" : "local"
   )
@@ -66,6 +74,10 @@ export function SyncProvider({ children }) {
   useEffect(() => {
     localStorage.setItem("expenses", JSON.stringify(expenses))
   }, [expenses])
+
+  useEffect(() => {
+    localStorage.setItem("checkedStops", JSON.stringify(checkedStops))
+  }, [checkedStops])
 
   useEffect(() => {
     if (!isSupabaseConfigured()) return
@@ -194,6 +206,17 @@ export function SyncProvider({ children }) {
     broadcastUpdate("budget_expenses", {})
   }, [broadcastUpdate])
 
+  const toggleStopChecked = useCallback(
+    (stopId) => {
+      setCheckedStops((prev) => {
+        const next = { ...prev, [stopId]: !prev[stopId] }
+        broadcastUpdate("checked_stops", { [stopId]: next[stopId] })
+        return next
+      })
+    },
+    [broadcastUpdate]
+  )
+
   const totalSpent = useMemo(
     () => Object.values(expenses).flat().reduce((sum, e) => sum + (Number(e.amount) || 0), 0),
     [expenses]
@@ -207,6 +230,7 @@ export function SyncProvider({ children }) {
       foodVotes,
       expenses,
       totalSpent,
+      checkedStops,
       connectionStatus,
       toggleFoodItem,
       togglePhotoItem,
@@ -216,6 +240,7 @@ export function SyncProvider({ children }) {
       removeExpense,
       resetDayExpenses,
       resetAllExpenses,
+      toggleStopChecked,
     }),
     [
       foodChecked,
@@ -224,6 +249,7 @@ export function SyncProvider({ children }) {
       foodVotes,
       expenses,
       totalSpent,
+      checkedStops,
       connectionStatus,
       toggleFoodItem,
       togglePhotoItem,
@@ -233,6 +259,7 @@ export function SyncProvider({ children }) {
       removeExpense,
       resetDayExpenses,
       resetAllExpenses,
+      toggleStopChecked,
     ]
   )
 
