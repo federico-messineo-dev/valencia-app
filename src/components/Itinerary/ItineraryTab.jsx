@@ -73,9 +73,12 @@ export default function ItineraryTab() {
 
   return (
     <div className="pb-24">
-      {/* Day Tabs — Sticky */}
-      <div className="sticky top-[52px] z-40 bg-sand/90 backdrop-blur-xl px-4 pt-3 pb-2 border-b border-notte/5">
-        <div className="flex gap-2 overflow-x-auto no-scrollbar pb-1">
+      {/* Day Tabs — Fixed */}
+      <div
+        className="fixed inset-x-0 z-40 bg-sand/90 backdrop-blur-xl px-4 border-b border-notte/5"
+        style={{ top: "calc(env(safe-area-inset-top, 0px) + 48px)" }}
+      >
+        <div className="flex gap-2 overflow-x-auto no-scrollbar py-2.5">
           {days.map((d, i) => (
             <motion.button
               key={d.id}
@@ -99,7 +102,7 @@ export default function ItineraryTab() {
         onPointerMove={handlePointerMove}
         onPointerUp={handlePointerUp}
         onPointerCancel={handlePointerUp}
-        style={{ touchAction: "pan-y" }}
+        style={{ touchAction: "pan-y", marginTop: "calc(env(safe-area-inset-top, 0px) + 92px)" }}
       >
         <AnimatePresence custom={direction} mode="wait">
           <motion.div
@@ -109,7 +112,7 @@ export default function ItineraryTab() {
             initial="enter"
             animate="center"
             exit="exit"
-            transition={{ type: "tween", duration: 0.2, ease: [0.32, 0.72, 0, 1] }}
+            transition={{ type: "tween", duration: 0.35, ease: [0.25, 1, 0.5, 1] }}
           >
             {/* Smart Day Header */}
             <DayHeader
