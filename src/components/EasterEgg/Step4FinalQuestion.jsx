@@ -231,10 +231,10 @@ export default function Step4FinalQuestion() {
                 💍
               </motion.div>
               <h2 className="text-2xl font-black text-white mb-3">
-                Guarda sotto il tavolo
+                Guardami
               </h2>
               <p className="text-white/50 text-xs leading-relaxed max-w-xs mx-auto mb-6">
-                Ho qualcosa di speciale per te. Un anello che rappresenta il nostro inizio.
+                Ho qualcosa di speciale per te.
               </p>
               <motion.button
                 whileTap={{ scale: 0.95 }}
