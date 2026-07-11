@@ -4,20 +4,43 @@ import { Sparkles, X } from "lucide-react"
 import { useEasterEgg } from "../../context/EasterEggContext"
 
 export default function Step1Trigger() {
-  const { started, startEasterEgg } = useEasterEgg()
+  const { started, startEasterEgg, openPuzzle } = useEasterEgg()
   const [showIntro, setShowIntro] = useState(false)
 
-  if (started) return null
+  const handleTap = () => {
+    if (started) {
+      openPuzzle(null)
+    } else {
+      setShowIntro(true)
+    }
+  }
 
   return (
     <>
       <div className="flex justify-center py-2">
         <motion.button
           whileTap={{ scale: 0.9 }}
-          onDoubleClick={() => setShowIntro(true)}
-          className="relative px-3 py-1 rounded-full text-[9px] font-medium text-notte/20 hover:text-notte/40 transition-colors select-none"
+          onDoubleClick={handleTap}
+          animate={
+            !started
+              ? { opacity: [0.4, 0.8, 0.4] }
+              : {}
+          }
+          transition={{ duration: 3, repeat: Infinity }}
+          className={`relative px-3 py-1 rounded-full text-[11px] font-bold select-none transition-colors ${
+            started
+              ? "text-valencia/50 hover:text-valencia/70"
+              : "text-notte/30 hover:text-notte/50"
+          }`}
         >
-          ✦
+          {started ? "✦" : "✦"}
+          {!started && (
+            <motion.span
+              className="absolute inset-0 rounded-full border border-valencia/20"
+              animate={{ scale: [1, 1.6, 1], opacity: [0.4, 0, 0.4] }}
+              transition={{ duration: 2.5, repeat: Infinity }}
+            />
+          )}
         </motion.button>
       </div>
 
