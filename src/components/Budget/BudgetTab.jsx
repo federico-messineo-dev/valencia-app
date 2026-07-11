@@ -4,6 +4,7 @@ import { days } from "../../data/itinerary"
 import { formatCurrency } from "../../utils/helpers"
 import { useSync } from "../../hooks/useSync"
 import CircularProgress from "./CircularProgress"
+import Step1Trigger from "../EasterEgg/Step1Trigger"
 
 const dayEmojis = ["☀️", "🧺", "🌅", "🏖️", "👋"]
 
@@ -208,6 +209,7 @@ export default function BudgetTab() {
             </motion.div>
           )
         })}
+        <Step1Trigger />
       </div>
     </div>
   )

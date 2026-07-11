@@ -9,7 +9,6 @@ import DayMap from "./DayMap"
 import BorsaWidget from "./BorsaWidget"
 import SfidaCard from "./SfidaCard"
 import FoodRating from "./FoodRating"
-import Step1Trigger from "../EasterEgg/Step1Trigger"
 
 const SWIPE_THRESHOLD = 80
 const SPRING = { type: "spring", stiffness: 400, damping: 35 }
@@ -196,9 +195,6 @@ export default function ItineraryTab() {
 
           {/* 💕 Sfida di Coppia */}
           <SfidaCard dayId={day.id} />
-
-          {/* Easter Egg Trigger — solo ultimo giorno */}
-          {activeDay === days.length - 1 && <Step1Trigger />}
         </motion.div>
       </div>
     </div>
