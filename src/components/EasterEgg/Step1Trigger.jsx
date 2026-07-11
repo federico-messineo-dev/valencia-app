@@ -20,7 +20,7 @@ export default function Step1Trigger() {
       <div className="flex justify-center py-2">
         <motion.button
           whileTap={{ scale: 0.9 }}
-          onDoubleClick={handleTap}
+          onClick={handleTap}
           animate={
             !started
               ? { opacity: [0.4, 0.8, 0.4] }
