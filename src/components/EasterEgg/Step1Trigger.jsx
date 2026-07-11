@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useState, useRef } from "react"
 import { motion, AnimatePresence } from "framer-motion"
 import { Sparkles, X } from "lucide-react"
 import { useEasterEgg } from "../../context/EasterEggContext"
@@ -6,8 +6,33 @@ import { useEasterEgg } from "../../context/EasterEggContext"
 export default function Step1Trigger() {
   const { started, startEasterEgg, openPuzzle } = useEasterEgg()
   const [showIntro, setShowIntro] = useState(false)
+  const timerRef = useRef(null)
+  const triggeredRef = useRef(false)
 
-  const handleDoubleTap = () => {
+  const handleTouchStart = () => {
+    triggeredRef.current = false
+    timerRef.current = setTimeout(() => {
+      triggeredRef.current = true
+      if (started) {
+        openPuzzle(null)
+      } else {
+        setShowIntro(true)
+      }
+    }, 500)
+  }
+
+  const handleTouchEnd = () => {
+    if (timerRef.current) {
+      clearTimeout(timerRef.current)
+      timerRef.current = null
+    }
+  }
+
+  const handleClick = () => {
+    if (triggeredRef.current) {
+      triggeredRef.current = false
+      return
+    }
     if (started) {
       openPuzzle(null)
     } else {
@@ -20,7 +45,10 @@ export default function Step1Trigger() {
       <div className="flex justify-center py-2">
         <motion.button
           whileTap={{ scale: 0.9 }}
-          onDoubleClick={handleDoubleTap}
+          onClick={handleClick}
+          onTouchStart={handleTouchStart}
+          onTouchEnd={handleTouchEnd}
+          onTouchCancel={handleTouchEnd}
           animate={
             !started
               ? { opacity: [0.4, 0.8, 0.4] }
