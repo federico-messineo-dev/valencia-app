@@ -5,7 +5,7 @@ import { useEasterEgg } from "../../context/EasterEggContext"
 import { PUZZLES, CONSTELLATION_POINTS, CONSTELLATION_LINES } from "../../data/easterEgg"
 
 export default function Step3Constellation() {
-  const { solvedStars, closeModal, allSolved } = useEasterEgg()
+  const { solvedStars, closeModal, allSolved, setShowFinal } = useEasterEgg()
   const [showLines, setShowLines] = useState(false)
 
   useEffect(() => {
@@ -14,6 +14,16 @@ export default function Step3Constellation() {
       return () => clearTimeout(timer)
     }
   }, [allSolved])
+
+  useEffect(() => {
+    if (allSolved && showLines) {
+      const timer = setTimeout(() => {
+        closeModal()
+        setShowFinal(true)
+      }, 5000)
+      return () => clearTimeout(timer)
+    }
+  }, [allSolved, showLines, closeModal, setShowFinal])
 
   const points = CONSTELLATION_POINTS.slice(0, solvedStars.length)
 

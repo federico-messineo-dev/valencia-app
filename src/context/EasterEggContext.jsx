@@ -60,9 +60,12 @@ export function EasterEggProvider({ children }) {
         const next = [...prev, puzzleId]
         if (next.length >= TOTAL_STARS) {
           setTimeout(() => {
-            setShowFinal(true)
+            setShowModal(false)
             setCurrentPuzzle(null)
-          }, 1500)
+            setTimeout(() => {
+              setShowModal(true)
+            }, 300)
+          }, 1200)
         }
         return next
       })
