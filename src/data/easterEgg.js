@@ -28,7 +28,7 @@ export const PUZZLES = [
       { text: "Sul divano a casa", correct: false },
       { text: "A un pub", correct: true },
     ],
-    successMessage: "Un pub... il posto più bello del mondo.",
+    successMessage: "Già...anche se purtroppo era il 24",
     starLabel: "Primo Bacio",
   },
   {
