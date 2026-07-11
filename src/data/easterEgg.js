@@ -26,7 +26,7 @@ export const PUZZLES = [
     options: [
       { text: "Al mare", correct: false },
       { text: "Sul divano a casa", correct: true },
-      { text: "Al cinema", correct: false },
+      { text: "A un pub", correct: false },
     ],
     successMessage: "Il divano... il posto più bello del mondo.",
     starLabel: "Primo Bacio",
