@@ -14,20 +14,20 @@ const bgStars = Array.from({ length: 40 }, (_, i) => ({
 }))
 
 export default function Step4FinalQuestion() {
-  const { showFinal, setShowFinal } = useEasterEgg()
+  const { showFinal, setShowFinal, answeredYes, setAnsweredYes } = useEasterEgg()
   const [phase, setPhase] = useState(0)
-  const [answered, setAnswered] = useState(false)
-  const [saidYes, setSaidYes] = useState(false)
+  const [answered, setAnswered] = useState(answeredYes)
+  const [saidYes, setSaidYes] = useState(answeredYes)
   const prevShowFinal = useRef(showFinal)
 
   useEffect(() => {
     if (showFinal && !prevShowFinal.current) {
       setPhase(0)
-      setAnswered(false)
-      setSaidYes(false)
+      setAnswered(answeredYes)
+      setSaidYes(answeredYes)
     }
     prevShowFinal.current = showFinal
-  }, [showFinal])
+  }, [showFinal, answeredYes])
 
   useEffect(() => {
     if (!showFinal) return
@@ -183,6 +183,7 @@ export default function Step4FinalQuestion() {
                   onClick={() => {
                     setSaidYes(true)
                     setAnswered(true)
+                    setAnsweredYes(true)
                   }}
                   className="relative py-4 px-6 rounded-2xl text-base font-black text-white bg-gradient-to-r from-valencia via-peach to-valencia shadow-2xl shadow-valencia/30 overflow-hidden"
                 >

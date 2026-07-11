@@ -29,14 +29,22 @@ export function EasterEggProvider({ children }) {
 
   const [showModal, setShowModal] = useState(false)
 
-  const [showFinal, setShowFinal] = useState(false)
+  const [answeredYes, setAnsweredYes] = useState(() => {
+    const s = loadState()
+    return s?.answeredYes ?? false
+  })
+
+  const [showFinal, setShowFinal] = useState(() => {
+    const s = loadState()
+    return s?.showFinal ?? false
+  })
 
   useEffect(() => {
     localStorage.setItem(
       "easterEgg",
-      JSON.stringify({ started, solvedStars })
+      JSON.stringify({ started, solvedStars, showFinal, answeredYes })
     )
-  }, [started, solvedStars])
+  }, [started, solvedStars, showFinal, answeredYes])
 
   const startEasterEgg = useCallback(() => {
     setStarted(true)
@@ -80,6 +88,7 @@ export function EasterEggProvider({ children }) {
       currentPuzzle,
       showModal,
       showFinal,
+      answeredYes,
       allSolved,
       totalStars: TOTAL_STARS,
       startEasterEgg,
@@ -87,6 +96,7 @@ export function EasterEggProvider({ children }) {
       openPuzzle,
       closeModal,
       setShowFinal,
+      setAnsweredYes,
     }),
     [
       started,
@@ -94,6 +104,7 @@ export function EasterEggProvider({ children }) {
       currentPuzzle,
       showModal,
       showFinal,
+      answeredYes,
       allSolved,
       startEasterEgg,
       solvePuzzle,
