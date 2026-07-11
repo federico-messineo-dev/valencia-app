@@ -6,7 +6,7 @@ export default function SyncBadge() {
   const { connectionStatus } = useSync()
 
   const config = {
-    cloud: {
+    connected: {
       icon: Cloud,
       label: "Sincronizzato",
       bg: "bg-emerald-500/10",
@@ -23,6 +23,13 @@ export default function SyncBadge() {
     connecting: {
       icon: Loader2,
       label: "Connessione...",
+      bg: "bg-notte/5",
+      text: "text-notte/40",
+      dot: "bg-notte/30",
+    },
+    fallback: {
+      icon: Loader2,
+      label: "Riconnessione...",
       bg: "bg-notte/5",
       text: "text-notte/40",
       dot: "bg-notte/30",

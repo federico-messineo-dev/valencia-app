@@ -96,12 +96,14 @@ export function SyncProvider({ children }) {
           setFoodVotes((prev) => ({ ...prev, ...data }))
         } else if (table === "budget_expenses") {
           setExpenses(data)
+        } else if (table === "checked_stops") {
+          setCheckedStops((prev) => ({ ...prev, ...data }))
         }
       })
       .subscribe((status) => {
         if (status === "SUBSCRIBED") {
           setConnectionStatus("connected")
-        } else if (status === "CHANNEL_ERROR") {
+        } else if (status === "CHANNEL_ERROR" || status === "TIMED_OUT") {
           setConnectionStatus("fallback")
         }
       })
@@ -113,15 +115,14 @@ export function SyncProvider({ children }) {
 
   const broadcastUpdate = useCallback(
     (table, data) => {
-      if (connectionStatus === "connected") {
-        supabase.channel("valencia-sync").send({
-          type: "broadcast",
-          event: "sync_update",
-          payload: { table, data },
-        })
-      }
+      if (!isSupabaseConfigured()) return
+      supabase.channel("valencia-sync").send({
+        type: "broadcast",
+        event: "sync_update",
+        payload: { table, data },
+      })
     },
-    [connectionStatus]
+    []
   )
 
   const toggleFoodItem = useCallback(
