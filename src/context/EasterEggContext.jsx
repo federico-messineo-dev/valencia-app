@@ -34,8 +34,14 @@ export function EasterEggProvider({ children }) {
     return s?.answeredYes ?? false
   })
 
+  const [proposalCompleted, setProposalCompleted] = useState(() => {
+    const s = loadState()
+    return s?.proposalCompleted ?? false
+  })
+
   const [showFinal, setShowFinal] = useState(() => {
     const s = loadState()
+    if (s?.proposalCompleted) return false
     if (s?.solvedStars?.length >= TOTAL_STARS) return true
     return s?.showFinal ?? false
   })
@@ -43,9 +49,9 @@ export function EasterEggProvider({ children }) {
   useEffect(() => {
     localStorage.setItem(
       "easterEgg",
-      JSON.stringify({ started, solvedStars, showFinal, answeredYes })
+      JSON.stringify({ started, solvedStars, showFinal, answeredYes, proposalCompleted })
     )
-  }, [started, solvedStars, showFinal, answeredYes])
+  }, [started, solvedStars, showFinal, answeredYes, proposalCompleted])
 
   const startEasterEgg = useCallback(() => {
     setStarted(true)
@@ -93,6 +99,7 @@ export function EasterEggProvider({ children }) {
       showModal,
       showFinal,
       answeredYes,
+      proposalCompleted,
       allSolved,
       totalStars: TOTAL_STARS,
       startEasterEgg,
@@ -101,6 +108,7 @@ export function EasterEggProvider({ children }) {
       closeModal,
       setShowFinal,
       setAnsweredYes,
+      setProposalCompleted,
     }),
     [
       started,
@@ -109,6 +117,7 @@ export function EasterEggProvider({ children }) {
       showModal,
       showFinal,
       answeredYes,
+      proposalCompleted,
       allSolved,
       startEasterEgg,
       solvePuzzle,
