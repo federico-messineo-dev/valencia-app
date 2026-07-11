@@ -17,6 +17,7 @@ import {
   Check,
 } from "lucide-react"
 import { useSync } from "../../hooks/useSync"
+import HiddenStar from "../EasterEgg/HiddenStar"
 
 const categoryIcons = {
   food: UtensilsCrossed,
@@ -74,7 +75,8 @@ export default function StopCard({ stop, index }) {
       </div>
 
       {/* Card */}
-      <div className="flex-1 min-w-0">
+      <div className="flex-1 min-w-0 relative">
+        <HiddenStar stopId={stop.id} />
         <motion.div
           whileTap={{ scale: 0.98 }}
           onClick={() => setExpanded(!expanded)}
