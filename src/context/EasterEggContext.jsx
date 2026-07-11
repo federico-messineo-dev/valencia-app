@@ -36,6 +36,7 @@ export function EasterEggProvider({ children }) {
 
   const [showFinal, setShowFinal] = useState(() => {
     const s = loadState()
+    if (s?.solvedStars?.length >= TOTAL_STARS) return true
     return s?.showFinal ?? false
   })
 
