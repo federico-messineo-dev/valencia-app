@@ -7,7 +7,6 @@ import { PUZZLES } from "../../data/easterEgg"
 export default function Step2Puzzle() {
   const { currentPuzzle, solvePuzzle, closeModal } = useEasterEgg()
   const [selected, setSelected] = useState(null)
-  const [scrambleInput, setScrambleInput] = useState("")
   const [showSuccess, setShowSuccess] = useState(false)
   const [isCorrect, setIsCorrect] = useState(false)
   const prevPuzzleRef = useRef(currentPuzzle)
@@ -18,7 +17,6 @@ export default function Step2Puzzle() {
     if (prevPuzzleRef.current !== currentPuzzle) {
       prevPuzzleRef.current = currentPuzzle
       setSelected(null)
-      setScrambleInput("")
       setShowSuccess(false)
       setIsCorrect(false)
     }
@@ -27,21 +25,13 @@ export default function Step2Puzzle() {
   if (!puzzle) return null
 
   const handleCheck = () => {
-    const isAnswerCorrect =
-      puzzle.type === "scramble"
-        ? scrambleInput.toUpperCase().trim() === puzzle.answer
-        : selected !== null && puzzle.options[selected].correct
+    const isAnswerCorrect = selected !== null && puzzle.options[selected].correct
     setIsCorrect(isAnswerCorrect)
     setShowSuccess(true)
     if (isAnswerCorrect) {
       solvePuzzle(puzzle.id)
     }
   }
-
-  const canCheck =
-    puzzle.type === "scramble"
-      ? scrambleInput.length > 0
-      : selected !== null
 
   return (
     <div className="p-5">
@@ -77,62 +67,35 @@ export default function Step2Puzzle() {
               {puzzle.question}
             </p>
 
-            {puzzle.type === "scramble" ? (
-              <div className="space-y-3">
-                <input
-                  type="text"
-                  value={scrambleInput}
-                  onChange={(e) => setScrambleInput(e.target.value)}
-                  placeholder="Scrivi la risposta..."
-                  className="w-full px-4 py-3 bg-sand rounded-xl border border-notte/10 text-sm font-bold text-notte placeholder:text-notte/30 focus:outline-none focus:border-valencia/50 transition-colors"
-                  onKeyDown={(e) => {
-                    if (e.key === "Enter" && canCheck) handleCheck()
-                  }}
-                />
+            <div className="space-y-2">
+              {puzzle.options.map((opt, i) => (
                 <motion.button
-                  whileTap={{ scale: 0.95 }}
-                  onClick={handleCheck}
-                  disabled={!canCheck}
-                  className={`w-full py-3 rounded-xl text-sm font-bold transition-colors ${
-                    canCheck
-                      ? "bg-gradient-to-r from-valencia to-peach text-white shadow-lg shadow-valencia/20"
-                      : "bg-notte/5 text-notte/30"
+                  key={i}
+                  whileTap={{ scale: 0.97 }}
+                  onClick={() => setSelected(i)}
+                  className={`w-full text-left px-4 py-3 rounded-xl text-sm font-semibold border transition-all ${
+                    selected === i
+                      ? "bg-valencia/10 border-valencia/30 text-valencia"
+                      : "bg-sand border-notte/5 text-notte/60 hover:border-notte/15"
                   }`}
                 >
-                  Verifica
+                  {opt.text}
                 </motion.button>
-              </div>
-            ) : (
-              <div className="space-y-2">
-                {puzzle.options.map((opt, i) => (
-                  <motion.button
-                    key={i}
-                    whileTap={{ scale: 0.97 }}
-                    onClick={() => setSelected(i)}
-                    className={`w-full text-left px-4 py-3 rounded-xl text-sm font-semibold border transition-all ${
-                      selected === i
-                        ? "bg-valencia/10 border-valencia/30 text-valencia"
-                        : "bg-sand border-notte/5 text-notte/60 hover:border-notte/15"
-                    }`}
-                  >
-                    {opt.text}
-                  </motion.button>
-                ))}
+              ))}
 
-                <motion.button
-                  whileTap={{ scale: 0.95 }}
-                  onClick={handleCheck}
-                  disabled={!canCheck}
-                  className={`w-full py-3 rounded-xl text-sm font-bold transition-colors ${
-                    canCheck
-                      ? "bg-gradient-to-r from-valencia to-peach text-white shadow-lg shadow-valencia/20"
-                      : "bg-notte/5 text-notte/30"
-                  }`}
-                >
-                  Verifica
-                </motion.button>
-              </div>
-            )}
+              <motion.button
+                whileTap={{ scale: 0.95 }}
+                onClick={handleCheck}
+                disabled={selected === null}
+                className={`w-full py-3 rounded-xl text-sm font-bold transition-colors ${
+                  selected !== null
+                    ? "bg-gradient-to-r from-valencia to-peach text-white shadow-lg shadow-valencia/20"
+                    : "bg-notte/5 text-notte/30"
+                }`}
+              >
+                Verifica
+              </motion.button>
+            </div>
           </motion.div>
         ) : (
           <motion.div

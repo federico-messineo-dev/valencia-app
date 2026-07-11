@@ -33,11 +33,15 @@ export const PUZZLES = [
   },
   {
     id: 2,
-    type: "scramble",
-    question: "Riordina le lettere: A L E C O R V A",
-    answer: "VALERIO",
-    successMessage: "VALERIO... il tuo nome, la mia costellazione fissa.",
-    starLabel: "Nome",
+    type: "memory",
+    question: "Quale canzone ascoltavamo in continuazione in macchina per Valencia?",
+    options: [
+      { text: "Non lo so", correct: false },
+      { text: "Dimmela tu", correct: true },
+      { text: "Non ricordo", correct: false },
+    ],
+    successMessage: "Già... e ci tornerà in testa per tutto il viaggio.",
+    starLabel: "Nostra Canzone",
   },
   {
     id: 3,
