@@ -6,24 +6,19 @@ import { useEasterEgg } from "../../context/EasterEggContext"
 export default function Step1Trigger() {
   const { started, startEasterEgg, openPuzzle } = useEasterEgg()
   const [showIntro, setShowIntro] = useState(false)
-  const downRef = useRef(false)
-  const timeRef = useRef(0)
+  const lastTapRef = useRef(0)
 
-  const handlePointerDown = () => {
-    downRef.current = true
-    timeRef.current = Date.now()
-  }
-
-  const handlePointerUp = () => {
-    if (!downRef.current) return
-    downRef.current = false
-    const elapsed = Date.now() - timeRef.current
-    if (elapsed < 300) {
+  const handleTap = () => {
+    const now = Date.now()
+    if (now - lastTapRef.current < 400) {
+      lastTapRef.current = 0
       if (started) {
         openPuzzle(null)
       } else {
         setShowIntro(true)
       }
+    } else {
+      lastTapRef.current = now
     }
   }
 
@@ -31,9 +26,7 @@ export default function Step1Trigger() {
     <>
       <div className="flex justify-center py-2">
         <button
-          onPointerDown={handlePointerDown}
-          onPointerUp={handlePointerUp}
-          onPointerCancel={() => { downRef.current = false }}
+          onPointerUp={handleTap}
           className={`relative w-11 h-11 flex items-center justify-center rounded-full text-[13px] font-bold select-none touch-manipulation ${
             started
               ? "text-valencia/50 active:text-valencia/70"
