@@ -34,13 +34,13 @@ export const PUZZLES = [
   {
     id: 2,
     type: "memory",
-    question: "Quale canzone ascoltavamo in continuazione in macchina per Valencia?",
+    question: "Qual è il nome della canzone della nostra storia alla mostra dei fiori?",
     options: [
-      { text: "Non lo so", correct: false },
-      { text: "Dimmela tu", correct: true },
-      { text: "Non ricordo", correct: false },
+      { text: "Where's My Love", correct: true },
+      { text: "La La Land", correct: false },
+      { text: "City of Stars", correct: false },
     ],
-    successMessage: "Già... e ci tornerà in testa per tutto il viaggio.",
+    successMessage: "Where's My Love... quella che ci haunito.",
     starLabel: "Nostra Canzone",
   },
   {
