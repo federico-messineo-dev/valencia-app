@@ -1,4 +1,4 @@
-import { useState, useRef, useCallback } from "react"
+import { useState } from "react"
 import { motion, AnimatePresence } from "framer-motion"
 import { Sparkles, X } from "lucide-react"
 import { useEasterEgg } from "../../context/EasterEggContext"
@@ -6,35 +6,28 @@ import { useEasterEgg } from "../../context/EasterEggContext"
 export default function Step1Trigger() {
   const { started, startEasterEgg, openPuzzle } = useEasterEgg()
   const [showIntro, setShowIntro] = useState(false)
-  const lastTapRef = useRef(0)
 
-  const handleTap = useCallback(() => {
-    const now = Date.now()
-    if (now - lastTapRef.current < 350) {
-      if (started) {
-        openPuzzle(null)
-      } else {
-        setShowIntro(true)
-      }
-      lastTapRef.current = 0
+  const handleDoubleTap = () => {
+    if (started) {
+      openPuzzle(null)
     } else {
-      lastTapRef.current = now
+      setShowIntro(true)
     }
-  }, [started, openPuzzle])
+  }
 
   return (
     <>
       <div className="flex justify-center py-2">
         <motion.button
           whileTap={{ scale: 0.9 }}
-          onClick={handleTap}
+          onDoubleClick={handleDoubleTap}
           animate={
             !started
               ? { opacity: [0.4, 0.8, 0.4] }
               : {}
           }
           transition={{ duration: 3, repeat: Infinity }}
-          className={`relative px-3 py-1 rounded-full text-[11px] font-bold select-none transition-colors ${
+          className={`relative w-10 h-10 flex items-center justify-center rounded-full text-[13px] font-bold select-none transition-colors ${
             started
               ? "text-valencia/50 hover:text-valencia/70"
               : "text-notte/30 hover:text-notte/50"
