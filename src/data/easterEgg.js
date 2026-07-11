@@ -25,10 +25,10 @@ export const PUZZLES = [
     question: "Dove ci siamo baciati per la prima volta?",
     options: [
       { text: "Al mare", correct: false },
-      { text: "Sul divano a casa", correct: true },
-      { text: "A un pub", correct: false },
+      { text: "Sul divano a casa", correct: false },
+      { text: "A un pub", correct: true },
     ],
-    successMessage: "Il divano... il posto più bello del mondo.",
+    successMessage: "Un pub... il posto più bello del mondo.",
     starLabel: "Primo Bacio",
   },
   {
