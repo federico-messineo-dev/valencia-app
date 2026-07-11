@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useState, useRef, useCallback } from "react"
 import { motion, AnimatePresence } from "framer-motion"
 import { Sparkles, X } from "lucide-react"
 import { useEasterEgg } from "../../context/EasterEggContext"
@@ -6,14 +6,21 @@ import { useEasterEgg } from "../../context/EasterEggContext"
 export default function Step1Trigger() {
   const { started, startEasterEgg, openPuzzle } = useEasterEgg()
   const [showIntro, setShowIntro] = useState(false)
+  const lastTapRef = useRef(0)
 
-  const handleTap = () => {
-    if (started) {
-      openPuzzle(null)
+  const handleTap = useCallback(() => {
+    const now = Date.now()
+    if (now - lastTapRef.current < 350) {
+      if (started) {
+        openPuzzle(null)
+      } else {
+        setShowIntro(true)
+      }
+      lastTapRef.current = 0
     } else {
-      setShowIntro(true)
+      lastTapRef.current = now
     }
-  }
+  }, [started, openPuzzle])
 
   return (
     <>
@@ -33,7 +40,7 @@ export default function Step1Trigger() {
               : "text-notte/30 hover:text-notte/50"
           }`}
         >
-          {started ? "✦" : "✦"}
+          ✦
           {!started && (
             <motion.span
               className="absolute inset-0 rounded-full border border-valencia/20"
