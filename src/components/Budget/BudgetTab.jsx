@@ -4,7 +4,6 @@ import { days } from "../../data/itinerary"
 import { formatCurrency } from "../../utils/helpers"
 import { useSync } from "../../hooks/useSync"
 import CircularProgress from "./CircularProgress"
-import Step1Trigger from "../EasterEgg/Step1Trigger"
 
 const dayEmojis = ["☀️", "🧺", "🌅", "🏖️", "👋"]
 
@@ -105,9 +104,6 @@ export default function BudgetTab() {
           </div>
         </div>
       </div>
-
-      {/* Easter Egg Trigger */}
-      <Step1Trigger />
 
       {/* Day Cards */}
       <div className="px-4 space-y-2">
