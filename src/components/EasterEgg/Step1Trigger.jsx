@@ -6,70 +6,50 @@ import { useEasterEgg } from "../../context/EasterEggContext"
 export default function Step1Trigger() {
   const { started, startEasterEgg, openPuzzle } = useEasterEgg()
   const [showIntro, setShowIntro] = useState(false)
-  const timerRef = useRef(null)
-  const triggeredRef = useRef(false)
+  const downRef = useRef(false)
+  const timeRef = useRef(0)
 
-  const handleTouchStart = () => {
-    triggeredRef.current = false
-    timerRef.current = setTimeout(() => {
-      triggeredRef.current = true
+  const handlePointerDown = () => {
+    downRef.current = true
+    timeRef.current = Date.now()
+  }
+
+  const handlePointerUp = () => {
+    if (!downRef.current) return
+    downRef.current = false
+    const elapsed = Date.now() - timeRef.current
+    if (elapsed < 300) {
       if (started) {
         openPuzzle(null)
       } else {
         setShowIntro(true)
       }
-    }, 500)
-  }
-
-  const handleTouchEnd = () => {
-    if (timerRef.current) {
-      clearTimeout(timerRef.current)
-      timerRef.current = null
-    }
-  }
-
-  const handleClick = () => {
-    if (triggeredRef.current) {
-      triggeredRef.current = false
-      return
-    }
-    if (started) {
-      openPuzzle(null)
-    } else {
-      setShowIntro(true)
     }
   }
 
   return (
     <>
       <div className="flex justify-center py-2">
-        <motion.button
-          whileTap={{ scale: 0.9 }}
-          onClick={handleClick}
-          onTouchStart={handleTouchStart}
-          onTouchEnd={handleTouchEnd}
-          onTouchCancel={handleTouchEnd}
-          animate={
-            !started
-              ? { opacity: [0.4, 0.8, 0.4] }
-              : {}
-          }
-          transition={{ duration: 3, repeat: Infinity }}
-          className={`relative w-10 h-10 flex items-center justify-center rounded-full text-[13px] font-bold select-none transition-colors ${
+        <button
+          onPointerDown={handlePointerDown}
+          onPointerUp={handlePointerUp}
+          onPointerCancel={() => { downRef.current = false }}
+          className={`relative w-11 h-11 flex items-center justify-center rounded-full text-[13px] font-bold select-none touch-manipulation ${
             started
-              ? "text-valencia/50 hover:text-valencia/70"
-              : "text-notte/30 hover:text-notte/50"
+              ? "text-valencia/50 active:text-valencia/70"
+              : "text-notte/30 active:text-notte/50"
           }`}
         >
-          ✦
+          <span
+            className={started ? "" : "animate-pulse"}
+            style={{ animationDuration: "3s" }}
+          >
+            ✦
+          </span>
           {!started && (
-            <motion.span
-              className="absolute inset-0 rounded-full border border-valencia/20"
-              animate={{ scale: [1, 1.6, 1], opacity: [0.4, 0, 0.4] }}
-              transition={{ duration: 2.5, repeat: Infinity }}
-            />
+            <span className="absolute inset-0 rounded-full border border-valencia/20 animate-ping" style={{ animationDuration: "2.5s" }} />
           )}
-        </motion.button>
+        </button>
       </div>
 
       <AnimatePresence>
